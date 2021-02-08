@@ -50,4 +50,22 @@ $(document).ready(function() {
       }
     }
   });
+  $('#random').click(function() {
+    $('.output').empty();
+    let request = new XMLHttpRequest();
+    const url = `https://api.giphy.com/v1/gifs/random?&api_key=${process.env.API_KEY}&limit=5`;
+
+    request.onreadystatechange = function() {
+      if (this.readyState === 4 && this.status === 200) {
+        const response = JSON.parse(this.responseText);
+        getElements(response);
+      }
+    };
+    request.open("GET", url, true);
+    request.send();
+
+    function getElements(response)  {
+      $('.output').append(`<img width="300" height="300" src="${response.data.images.original.url}">`);
+    }
+  });
 });
